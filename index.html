@@ -1,50 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- script link -->
-    <script src="js/script.js" defer></script>
-    <script src="js/dragdrop.js" defer></script>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- style file -->
-    <link rel="stylesheet" href="./style/base.css" />
-    <link rel="stylesheet" href="./style/colour.css" />
-    <link rel="stylesheet" href="./style/layout.css" />
+  <!-- script link -->
+  <script src="js/script.js" defer></script>
+  <script src="js/dragdrop.js" defer></script>
 
-    <title>HTML JavaScript</title>
-  </head>
-  <body>
-    <img
-      draggable="true"
-      id="complement-one"
-      src="assets/complements/hat.png"
-      alt="A hat"
-    />
-    <!-- main div - full width and full height -->
-    <div class="container width-full height-full">
-      <!-- inner div - floating in middle of webpage -->
-      <div
-        class="container flex-column width-half height-500px bg-marine_blue text-white"
-      >
-        <img
-          id="character-img"
-          src="assets/chikorita.png"
-          alt="Initial Pokemon Chikorita"
-        />
+  <!-- style file -->
+  <link rel="stylesheet" href="./style/base.css" />
+  <link rel="stylesheet" href="./style/colour.css" />
+  <link rel="stylesheet" href="./style/layout.css" />
+
+  <title>HTML JavaScript</title>
+</head>
+
+<body>
+
+  <!-- main div - full width and full height -->
+  <div class="container width-full height-full">
+    <!-- inner div - floating in middle of webpage -->
+    <div class="container width-half height-500px bg-marine_blue text-white">
+
+      <div class="container flex-column">
+        <img draggable="true" id="complement-one" src="assets/complements/hat.png" alt="A hat" />
+      </div>
+
+      <div class="container flex-column">
+        <img id="character-img" src="assets/chikorita.png" alt="Initial Pokemon Chikorita" />
         <!-- character name -->
         <p id="my-paragraph">Chikorita</p>
 
         <!-- change name of character input -->
-         <div class="container">
-          <input id="name-change-input"/>
+        <div class="container">
+          <input id="name-change-input" />
           <button id="name-change-button">Change Name</button>
-         </div>
+        </div>
 
         <!-- change of text button -->
         <button id="my-button">Click Me</button>
       </div>
+
     </div>
-  </body>
+  </div>
+</body>
+
 </html>

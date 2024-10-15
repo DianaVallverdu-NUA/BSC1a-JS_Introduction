@@ -23,3 +23,7 @@ a {
   cursor: pointer;
   color: white;
 }
+
+#complement-one {
+  position: relative;
+}
