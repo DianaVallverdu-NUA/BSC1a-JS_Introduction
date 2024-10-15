@@ -24,6 +24,9 @@ a {
   color: white;
 }
 
-#complement-one {
+.complement {
   position: relative;
+
+  width: 100px;
+  height: 100px;
 }
