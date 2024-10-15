@@ -7,18 +7,22 @@ const altText = ["Initial Pokemon Chikorita", "Initial Pokemon Cyndaquil", "Init
 // define text for paragraph for each character choice
 const characterNames = ["Chikorita", "Cyndaquil", "Totodile"];
 
-// define HTML Element constants
+// define HTML Element constants - character selection
 const myButton = document.getElementById("my-button");
 const myParagraph = document.getElementById("my-paragraph");
 const characterImage = document.getElementById("character-img");
 
+// define HTML Element constants - character nameing
+const characterNameInput = document.getElementById("name-change-input");
+const characterNameButton = document.getElementById("name-change-button");
+
 // store which character is currently being displayed
 let characterCounter = 1;
+
 
 /**
  * Update character counter and display next character.
  * Sets counter back to 1 if 3 has been surpassed.
- * @returns when character is chosen
  */
 function clickFunction() {
   console.log("============== NEW CLICK  ==============");
@@ -42,4 +46,12 @@ function clickFunction() {
   myParagraph.innerHTML = characterNames[characterCounter - 1];
 }
 
+/**
+ * Update character name to what is stored in the input field.
+ */
+function onSubmitButton() {
+  myParagraph.innerHTML = characterNameInput.value;
+}
+
 myButton.onclick = clickFunction;
+characterNameButton.onclick = onSubmitButton;

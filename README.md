@@ -1,4 +1,3 @@
-# BSC1a-JS Introduction
 
 ## What We Did
 
