@@ -1,7 +1,17 @@
 // define sources for each character choice
-const imageOne = "assets/chikorita.png";
-const imageTwo = "assets/cyndaquil.png";
-const imageThree = "assets/totodile.png";
+const image1 = "assets/chikorita.png";
+const image2 = "assets/cyndaquil.png";
+const image3 = "assets/totodile.png";
+
+// define alternative text for each character choice
+const altText1 = "Initial Pokemon Chikorita";
+const altText2 = "Initial Pokemon Cyndaquil";
+const altText3 = "Initial Pokemon Totodile";
+
+// define text for paragraph for each character choice
+const characterName1 = "Chikorita";
+const characterName2 = "Cyndaquil";
+const characterName3 = "Totodile";
 
 // define HTML Element constants
 const myButton = document.getElementById("my-button");
@@ -33,19 +43,25 @@ function clickFunction() {
   // find image related to specific character counter
   console.log("Testing if character counter is one");
   if (characterCounter === 1) {
-    characterImage.src = imageOne;
+    characterImage.src = image1;
+    characterImage.alt = altText1;
+    myParagraph.innerHTML = characterName1;
     return;
   }
 
   console.log("Testing if character counter is two");
   if (characterCounter === 2) {
-    characterImage.src = imageTwo;
+    characterImage.src = image2;
+    characterImage.alt = altText2;
+    myParagraph.innerHTML = characterName2;
     return;
   }
 
   console.log("Testing if character counter is three");
   if (characterCounter === 3) {
-    characterImage.src = imageThree;
+    characterImage.src = image3;
+    characterImage.alt = altText3;
+    myParagraph.innerHTML = characterName3;
     return;
   }
 
