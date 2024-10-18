@@ -1,7 +1,8 @@
-
 ## What We Did
 
-In this workshop we learnt about [JavaScript](https://vle.norwichuni.ac.uk/pluginfile.php/74069/mod_resource/content/2/JavaScript%20Introduction.pdf), the web development coding language, learning about some basics of coding such as Variables, Functions, and Events. To apply this knowledge, we started developing a character choice interface. The user can browse through three characters until they find the one they like.
+In this workshop we learnt about [JavaScript](https://vle.norwichuni.ac.uk/pluginfile.php/74069/mod_resource/content/2/JavaScript%20Introduction.pdf), the web development coding language, learning about some basics of coding such as Variables, Functions, and Events. To apply this knowledge, we started developing a character choice interface. The user can browse through three characters until they find the one they like. Steps for this workshop can be found from the section [Preliminary Steps](#preliminary-steps) on.
+
+A second workshop served us to add a drag and drop funcionality, to allow users to customize their characters. Steps for this exercise can be found from the section [Drag & Drop](#drag-&-drop) on;s
 
 ## How to do it at Home
 
@@ -144,8 +145,248 @@ if (characterCounter === 3) {
   characterImage.src = imageThree;
 }
 ```
+
 With this, the `characterImage.src` property is continuously updating as the user clicks on the button.
 
 ### Final Touches
 
 In class, we added the keyword `return` after each `characterImag.src` assignment. The `return` keyword tells the function to stop testing. Since we have found which character we were looking for, the program does not need to keep checking the value of `characterCount`. You can check the `script.js` file in this repository to see how we implemented.
+
+### Drag & Drops
+
+Implementing drag & drop is a complicated process. In this guide I will explain how the final implementation was done, but trying to implement a single drag & drop first is recommended. A simple [Drag & Drop tutorial](https://www.youtube.com/watch?v=_G8G1OrEOrI) can be followed in advance of these steps.
+
+1. Download two (or more) pictures in png or jpg format (an online [Image Converter](https://www.youtube.com/watch?v=_G8G1OrEOrI) can be used if needed).
+2. Save your new images in a subfolder in `assets/complements`.
+3. In your HTML, before your `character-img` image, add the following div:
+
+```HTML
+<div class="container flex-column">
+  <img draggable="true" class="complement" src="assets/complements/name_of_first_image" alt="description" />
+
+  <img draggable="true" class="complement" src="assets/complements/name_of_second_image" alt="description" />
+</div>
+```
+
+**Note:** You will have to change the `src` to match your images.
+**Note:** It is intended to have a `container` image with `flex-direction: column` properties. You may do this using different classes.
+
+4. Surround the `character-img`, the paragraph with its name, the change name input & button and the character change button with a `div` with the same properties. For example, in my case this would be:
+
+```HTML
+<div class="container flex-column">
+  <img id="character-img" src="assets/chikorita.png" alt="Initial Pokemon Chikorita" />
+
+    <p id="my-paragraph">Chikorita</p>
+
+    <div class="container">
+      <input id="name-change-input" />
+      <button id="name-change-button">Change Name</button>
+    </div>
+
+    <button id="my-button">Click Me</button>
+</div>
+```
+
+5. Remove the `flex-column` property from the div that contains both of these divs.
+
+In the end, your HTML body tag should look similar to this:
+
+```HTML
+<body>
+  <!-- main div - full width and full height -->
+  <div class="container width-full height-full">
+    <!-- inner div - floating in middle of webpage -->
+    <div class="container width-half height-500px bg-marine_blue text-white">
+
+      <!-- complements div - displayed as one column -->
+      <div class="container flex-column">
+        <img draggable="true" class="complement" src="assets/complements/hat.png" alt="A hat" />
+        <img draggable="true" class="complement" src="assets/complements/sunglasses.jpg" alt="Fancy Sunglasses" /> 
+      </div>
+
+      <!-- character choice div - displayed as one column -->
+      <div class="container flex-column">
+        <!-- image of the character currently selected -->
+        <img id="character-img" src="assets/chikorita.png" alt="Initial Pokemon Chikorita" />
+        
+        <!-- character name -->
+        <p id="my-paragraph">Chikorita</p>
+
+        <!-- change name of character input -->
+        <div class="container">
+          <input id="name-change-input" />
+          <button id="name-change-button">Change Name</button>
+        </div>
+
+        <!-- change of text button -->
+        <button id="my-button">Click Me</button>
+      </div>
+
+    </div>
+  </div>
+</body>
+```
+
+6. Having modified the HTML, change the CSS so that the images have the correct properties. Add the following class properties somewhere in your CSS:
+
+```CSS
+.complement {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+```
+
+`position: relative` will ensure that the images of class `complement` can be modified using the property `left` and `top`. These are necessary - as we will see when implementing the JavaScript - to implmenet the drag & drop.
+
+**Note:** You can change the pixels of `width` and `height`. These could even be changed individually for each image, with the use of ids.
+
+#### JavaScript - Iteration 1
+
+By default JavaScript does not allow to drag & drop Elements. However, it is possible to add code that prevents the default behaviour from happening. Three events will be used to implement the drag & drop:
+
+- The `ondrop` event - used to mark when something is dropped onto an Element. The `ondrop` element will be linked to the area where elements can be dropped (aka the character image).
+- The `ondragover` event - this is a special event. Usually, JavaScript will reset all the CSS of an Element that is being dragged on top of another element. We need to use the `ondragover` event to prevent the default behavior. This will be linked to the area where elements can be dropped (aka the character image).
+- The `ondrag` event - used to specify what happens when the user starts dragging a `draggable` element. We will use this to save some important information related to the drag & drop event. This will be linked individually to each of the draggable complements.
+
+1. At the top, select all elements with class `complement`. The `document.getElementsByClassName` function can do this, and returns a list of objects of given class. These are the draggable elements.
+
+```JavaScript
+const complements = document.getElementsByClassName("complement");
+```
+
+2. Create a second variable with name `dropZone` which points to the `character-img` element. This is the area where draggable elements are allowed to drop.
+
+```JavaScript
+const dropZone = document.getElementById("character-img");
+```
+
+3. Create three empty functions, and link each of them to its corresponding object. Since we have a list of draggable objects, we will have to use the concept of `loop` to link the `onDragStart` fucntion to each individual complement:
+
+```JavaScript
+
+function onDragStart(event) {
+
+}
+
+function onDrop(event) {
+
+}
+
+function onDragOver(event) {
+
+}
+
+dropZone.ondrop = onDrop;
+dropZone.ondragover = onDragOver;
+
+// the following command selects each of the complements of a list and applies the code to each of them individually
+for(let complement of complements) {
+  complement.ondragstart = onDragStart;
+}
+```
+
+**Note:** The `event` paramater that we have added to these functions is used to access properties and functions of the current event object. These could be the `target` - i.e., which object in the page fired the event.
+
+4. In the `onDragOver` function, add following code to prevent the default behavior:
+
+```JavaScript
+function onDragOver(event) {
+  event.preventDefault();
+}
+```
+
+5. Create a new `let` variable at the top with name `draggedElement`. This `let` variable will be used to mark which element is currently being dragged, so that we can then retreive it at the `drop` event and update its position.
+
+```JavaScript
+let draggedElement = undefined;
+```
+
+**Note:** When the page is rendered there is no no actively dragged element yet, so it is safe to leave this as `undefined`.
+
+6. Modify the `onDragStart` function to update the value of the `draggedElement` to the event `target` - i.e., the element that originated this event:
+
+```JavaScript
+function onDragStart(event) {
+  draggedElement = event.target;
+}
+```
+
+7. Modify the `onDrop` function to update the position of the `draggedElement` to the current mouse position. The current mouse position can be accessed with `event.clientX` (horizontal) and `event.clientY` (vertical).
+
+```JavaScript
+function onDrop(event) {
+  draggedElement.style.left = event.clientX + "px";
+  draggedElement.style.top = event.clinetY + "px";
+}
+```
+
+**Note:** Only elements with position set to `absolute` or `relative` can be modified using the `style.left` and `style.top` property. This is why it was important to set this property in the CSS.
+**Note:** An element's position can only be modified by changing its `left` and `top` style properties - i.e., which horiziontal or vertical position they have according to the top, left corner.
+
+8. Test it out! - Hint, it won't fully work.
+
+While it is possible to drag & drop the complement images, they are not being placed exactly where the mouse leaves them. Move on to **Iteration 2** to see how to fix this.
+
+### JavaScript - Iteration 2
+
+Think about the dragging steps with this example:
+
+- The first complements starts with position `initialLeft = 50`, `initialTop = 0`
+- The user clicks the object. However, the click doesn't happen at `(50,0)`. It may happen at `initialClientX = 53`, `initialClientY = 4`
+- The object is dropped, let's say at position `finalClientX = 40`, `finalClientY = 55`
+- The object is updated to have `finalLeft: 40`, `finalTop: 55`
+
+The problem here is that the calculation is not accounting for the initial displacement (the offset) of the mouse. The offset is the distance from `initialClientX` (where the client clicked) to `initialLeft` (the original position of the complement) in the horizontal axis, and the distance from `initialClientY` (where the client clicked) and `initialTop` (the original position of the complement) in the vertical axis.
+
+In this example, the initial offset was:
+
+`offsetX = initialClientX - initialLeft = 53 - 3 = 3`
+
+`offsetY = initialClientY - initialTop = 4 - 0 = 4`
+
+When dropping the element, the new position should have been
+
+`finalLeft = finalClientX - offsetX = 40 - 3 = 37`
+
+`finalTop = finalClientY - offsetY = 55 - 3 = 32`
+
+Access [this diagram](https://miro.com/app/board/uXjVLUfEZKc=/?moveToWidget=3458764603756583109&cot=14) for a visual explanation.
+
+This highlights that an offset needs to be implemented. To do this:
+
+1. Add two `let` variables `offsetX` and `offsetY` and implement them at `0`.
+
+```JavaScript
+let offsetX = 0;
+let offsetY = 0;
+```
+
+2. Modify the `onDragStart` function to calculate these offsets at the beginning:
+
+```JavaScript
+function onDragStart(event) {
+    draggedElement = event.target;
+
+    const style = window.getComputedStyle(draggedImage);
+
+    offsetX = event.clientX - parseInt(style.left);
+    offsetY = event.clientY - parseInt(style.top);
+}
+```
+
+**Note:** The `window.getComputedStyle` is a function that converts the CSS style (for ex. `300px`) to a version without the `px` part (for ex. `200`). 
+**Note:** The `parseInt` is necessary as `style.left` and `style.right` are of type string, and they need to be converted into Numbers.
+
+3. Modify the `onDrop` function to apply the `offset` at the end of the process:
+```JavaScript
+function onDrop(event) {
+    draggedImage.style.left = event.clientX - offsetX + "px";
+    draggedImage.style.top = event.clientY - offsetY + "px";
+}
+```
+
+4. Test it!
+
+With these changes, your drag & drop should be working.
