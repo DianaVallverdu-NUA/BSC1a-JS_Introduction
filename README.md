@@ -2,7 +2,7 @@
 
 In this workshop we learnt about [JavaScript](https://vle.norwichuni.ac.uk/pluginfile.php/74069/mod_resource/content/2/JavaScript%20Introduction.pdf), the web development coding language, learning about some basics of coding such as Variables, Functions, and Events. To apply this knowledge, we started developing a character choice interface. The user can browse through three characters until they find the one they like. Steps for this workshop can be found from the section [Preliminary Steps](#preliminary-steps) on.
 
-A second workshop served us to add a drag and drop funcionality, to allow users to customize their characters. Steps for this exercise can be found from the section [Drag & Drop](#drag-&-drop) on;s
+A second workshop served us to add a drag and drop funcionality, to allow users to customize their characters. Steps for this exercise can be found from the section [Drag & Drop](#drag-&-drop).
 
 ## How to do it at Home
 
